@@ -1,10 +1,11 @@
 module example/hello
 
-go 1.13
+go 1.21
 
 require (
-	example.com/greetings v0.0.0-00010101000000-000000000000
-	rsc.io/quote v1.5.2
+	github.com/jmoiron/sqlx v1.4.0
+	github.com/mattn/go-sqlite3 v1.14.45
+	github.com/mitchellh/mapstructure v1.5.0
 )
 
 replace example.com/greetings => ../greetings

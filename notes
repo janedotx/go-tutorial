@@ -1,0 +1,1 @@
+if a field is present in a struct, but not the db schema, sqlx will read the row into a struct instance without complaining

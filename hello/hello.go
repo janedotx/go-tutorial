@@ -2,6 +2,7 @@ package main
 
 import (
 	//	"example.com/greetings"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -18,10 +19,15 @@ func newPerson(name string) *person {
 	return &p
 }
 
-type testStruct struct {
+type testMarshalStruct struct {
+	Name string
 	name string
-	age  int
-	print  func() string
+}
+
+type testStruct struct {
+	name  string
+	age   int
+	print func() string
 }
 
 func (t testStruct) printName() string {
@@ -44,60 +50,35 @@ func testGET(url string) {
 	fmt.Println("status code: ", resp.StatusCode)
 }
 
+/*
+  Funny thing about this: if you have a struct with two fields that are the same except 
+	for capitalization, the json package will only unmarshal into the capitalized one. 
+	So in this case, testMarshal.Name will be "capital" and testMarshal.name will be "" (empty string). 
+	This is because the json package only looks at exported fields 
+	(those that start with a capital letter) when unmarshaling JSON data.
+*/
+func testMarshal() {
+	var testMarshal testMarshalStruct
+	err := json.Unmarshal([]byte("{\"name\": \"asdfname\",\"Name\":\"capital\"}"), &testMarshal)
+	if err != nil {
+		fmt.Println("failed to unmarshal")
+		log.Fatalln(err)
+	}
+	fmt.Println(testMarshal.Name)
+	fmt.Println(testMarshal.name)
+}
+
 func main() {
 	log.SetPrefix("greetings: ")
 	log.SetFlags(0)
 
+//	TestMapStructure()
+	setupDb()
 
-	//t := testStruct{name: "Seamus", age: 10, print: func() string { return "print func Seamus" }}
-	
-	t := testStruct{name: "Seamus", age: 10, print: talk}
-	fmt.Println(t.print())
+	writeDevice("device1", "http://example.com/device1")
+	devices := readDevices()
 
-	// begin copied from https://gobyexample.com/structs
-	// fmt.Println(person{"Bob", 20})
-
-	// fmt.Println(person{name: "Alice", age: 30})
-
-	// fmt.Println(person{name: "Fred"})
-    
-	// fmt.Println(&person{name: "Ann", age: 40})
-
-	// fmt.Println(newPerson("Jon"))
-
-	/*
-	s := person{name: "Sean", age: 50}
-	fmt.Println(s.name, "who knocks")
-
-	sp := &s
-	fmt.Println("This is sp", sp)
-	fmt.Println(sp.age)
-
-	sp.age = 51
-	fmt.Println(sp.age)
-
-	dog := struct {
-		name   string
-		isGood bool
-	}{
-			"Rex",
-			true,
-	}
-	fmt.Println(dog)
-
-	// messages, err := greetings.Hellos([]string{"gladys", "sammy", "darin"})
-
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println(messages)
-	// s := new testStruct() //{age: 10, name: "Seamus"}
-	// fmt.Println(s)
-	// fmt.Println(*s)
-	fmt.Println("how you try me golang")
-	*/
-
-	// go say("asdf")
-	// say("qer")
+	fmt.Printf("\n%s\n", devices[0].URL)
+	fmt.Printf("%s\n", devices[0].ID)
+	fmt.Printf("%s\n", devices[0].Organization)
 }
