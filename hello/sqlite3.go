@@ -8,7 +8,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
-type Organization map[string]interface{}
+type Organization string
+// func (o* Organization) Scan(value interface{}) error {
+// }
 
 type Device struct {
 	ID  string `db:"id"`
@@ -25,14 +27,16 @@ func setupDb() {
 
 	defer db.Close()
 
+	fmt.Println("setting up db")
+	dropTableStmt := `drop table if exists devices;`
+	_, err = db.Exec(dropTableStmt)
 		createDevicesStmt := `
-		drop table if exists devices;
 		CREATE TABLE if not exists devices (
-    id              TEXT PRIMARY KEY,
-    url             TEXT NOT NULL
-	);
+			id              TEXT PRIMARY KEY,
+			url             TEXT NOT NULL,
+			organization    TEXT NOT NULL
+		);
 		`
-    //organization    TEXT NOT NULL,
 	_, err = db.Exec(createDevicesStmt)
 
 	if err != nil {
@@ -51,8 +55,9 @@ func writeDevice(id string, url string) {
 		defer db.Close()
 
 		res, err := db.Exec(`
-			insert into devices (id, url) values (?, ?)
-			`, id, url,
+			insert into devices (id, url, organization) 
+				values (?, ?, ?)
+			`, id, url, `{"name": "org1"}`,
 		)
 
 		if err != nil {

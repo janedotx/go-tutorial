@@ -82,3 +82,11 @@ func JsonMarshalTest() {
     dec.Decode(&res1)
     fmt.Println(res1)
 }
+
+func TestJsonMarshalTestNullField () {
+    j := `{ "next": null, "count": 0 }`
+    m := make(map[string]any)
+
+    json.Unmarshal([]byte(j), &m)
+    fmt.Println(m["next"])
+}

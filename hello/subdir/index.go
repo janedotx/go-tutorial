@@ -2,7 +2,10 @@
 // in the same module. It doesn't do anything, but it shows how to import from a subdirectory
 package subdir
 
+import "example/hello/subdir/subsubdir"
+
 func SubdirFunc() string {
+	subsubdir.SubSubDirFunc()
 	return "this is a function in the subdir package"
 }
 
