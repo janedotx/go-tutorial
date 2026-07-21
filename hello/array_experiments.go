@@ -22,3 +22,9 @@ func InnerTestArray(arr *[]int) {
 	arr2 := make([]int, x)
 	fmt.Printf("%v\n", arr2)
 }
+
+// a slice of unknown length
+func InitializeSlice() interface{} {
+	s := []int{}
+	return s 
+}

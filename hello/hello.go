@@ -3,7 +3,6 @@ package main
 import (
 	//	"example.com/greetings"
 	"encoding/json"
-	"example/hello/subdir"
 	"fmt"
 	"log"
 	"net/http"
@@ -71,21 +70,7 @@ func testMarshal() {
 }
 
 func main() {
-// 	log.SetPrefix("greetings: ")
-// 	log.SetFlags(0)
-
-// //	TestMapStructure()
-// 	setupDb()
-
-// 	writeDevice("device1", "http://example.com/device1")
-// 	devices := readDevices()
-
-// 	fmt.Printf("\n%s\n", devices[0].URL)
-// 	fmt.Printf("%s\n", devices[0].ID)
-// 	fmt.Printf("%s\n", devices[0].Organization)
-	// testStruct := testStruct{ age: 42}
-	// fmt.Println(testStruct.printName())
-//	TestJsonMarshalTestNullField()
-	subdir.SubdirFunc()
+	SleepyTime()
+//	subdir.SubdirFunc()
 
 }

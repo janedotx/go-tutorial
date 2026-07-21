@@ -83,10 +83,27 @@ func JsonMarshalTest() {
     fmt.Println(res1)
 }
 
+type NestedKey struct {
+    nested_key int
+}
+
 func TestJsonMarshalTestNullField () {
     j := `{ "next": null, "count": 0 }`
     m := make(map[string]any)
 
     json.Unmarshal([]byte(j), &m)
     fmt.Println(m["next"])
+    fmt.Println(m["count"])
+
+    k := `{"next": "asdf", "nested": { "nested_key": 1 } }`
+    h := make(map[string]any)
+    json.Unmarshal([]byte(k), &h)
+    fmt.Println(h["nested"])
+    thing := h["nested"]
+    fmt.Println("h['asdf']")
+    fmt.Println(h["asdf"])
+    thing2, ok := thing.(map[string]any)
+    fmt.Println(ok)
+    fmt.Println(thing2["nested_key"])
+
 }
